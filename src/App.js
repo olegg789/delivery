@@ -1,4 +1,4 @@
-import React, {lazy, Suspense, useEffect} from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from '@reyzitwo/react-router-vkminiapps';
 
@@ -27,9 +27,12 @@ import MobailNavigation from './js/components/navigation/mobail';
 import HomeBotsListModal from './js/components/modals/HomeBotsListModal';
 import HomeBotInfoModal from './js/components/modals/HomeBotInfoModal';
 
-const HomePanelBase = lazy(() => import('./js/panels/home/base'));
-const HomePanelPlaceholder = lazy(() => import('./js/panels/home/placeholder'));
-const ProfilePanelBase = lazy(() => import('./js/panels/profile/base'));
+import Favorite from "./js/panels/favorite/base";
+import History from "./js/panels/history/base";
+import Home from "./js/panels/home/base"
+import Notify from "./js/panels/notify/base";
+
+import HomePanelPlaceholder from "./js/panels/home/infoParcel";
 
 const App = withAdaptivity(({ viewWidth, router }) => {
   const mainStorage = useSelector((state) => state.main)
@@ -38,13 +41,23 @@ const App = withAdaptivity(({ viewWidth, router }) => {
   dispatch(set({ key: 'isDesktop', value: viewWidth >= 3 }))
   dispatch(set({ key: 'platform', value: mainStorage.isDesktop ? VKCOM : usePlatform() }))
   dispatch(set({ key: 'hasHeader', value: mainStorage.isDesktop !== true }))
+  dispatch(set({ key: 'track', value: '' }))
 
-  useEffect(() => {
-    bridge.subscribe(({ detail: { type, data } }) => {
-      if (type === 'VKWebAppUpdateConfig') {
-        dispatch(set({ key: 'theme', value: data.scheme === 'space_gray' ? 'dark' : 'light' }))
+  const [scheme, setScheme] = useState('')
+
+  async function getAppScheme() {
+    bridge.subscribe((e) => {
+      if (e.detail.type === 'VKWebAppUpdateConfig') {
+        let data = e.detail.data.scheme
+        setScheme(data)
       }
     })
+    let appScheme = await bridge.send("VKWebAppGetConfig")
+    setScheme(appScheme.scheme)
+  }
+
+  useEffect(() => {
+    getAppScheme()
   }, [])
 
   const modals = (
@@ -55,7 +68,7 @@ const App = withAdaptivity(({ viewWidth, router }) => {
   );
 
   return(
-    <ConfigProvider platform={mainStorage.platform} appearance={mainStorage.theme} isWebView>
+    <ConfigProvider platform={mainStorage.platform} scheme={scheme} isWebView>
       <AppRoot>
         <SplitLayout
           header={mainStorage.hasHeader && <PanelHeader separator={false} />}
@@ -78,9 +91,9 @@ const App = withAdaptivity(({ viewWidth, router }) => {
                 modal={modals}
               >
                 <Panel id='base'>
-                  <Suspense fallback={<ScreenSpinner/>}>
-                    <HomePanelBase/>
-                  </Suspense>
+                  <Home
+                      isDesktop={mainStorage.isDesktop}
+                  />
                 </Panel>
 
                 <Panel id='placeholder'>
@@ -91,15 +104,35 @@ const App = withAdaptivity(({ viewWidth, router }) => {
               </View>
 
               <View 
-                id="profile"
+                id="notify"
                 activePanel={router.activePanel === 'route_modal' ? 'base' : router.activePanel}
                 popout={router.popout}
                 modal={modals}
               >
                 <Panel id='base'>
-                  <Suspense fallback={<ScreenSpinner/>}>
-                    <ProfilePanelBase/>
-                  </Suspense>
+                  <Notify/>
+                </Panel>
+              </View>
+
+              <View
+                  id="favorite"
+                  activePanel={router.activePanel === 'route_modal' ? 'base' : router.activePanel}
+                  popout={router.popout}
+                  modal={modals}
+              >
+                <Panel id='base'>
+                  <Favorite/>
+                </Panel>
+              </View>
+
+              <View
+                  id="history"
+                  activePanel={router.activePanel === 'route_modal' ? 'base' : router.activePanel}
+                  popout={router.popout}
+                  modal={modals}
+              >
+                <Panel id='base'>
+                  <History/>
                 </Panel>
               </View>
             </Epic>

@@ -40,3 +40,23 @@ body[scheme=vkcom_dark] .vkuiGradient--md-tint.vkuiGradient--to-top {
     margin-bottom: 24px;
     color: var(--text_secondary)
 }
+
+.vkuiTabbarItem--android .vkuiTabbarItem__tappable {
+    width: calc(100% + 16px);
+    padding-bottom: 0px;
+    border-radius: 50%;
+}
+
+.trackPlaceholder {
+    margin-top: calc(100% / 7);
+}
+
+.TabbarItem--selected .vkuiIcon {
+    transform: scale(1.3);
+}
+
+.actionsParcel {
+    position: absolute;
+    left: 87%;
+    top: 10%
+}

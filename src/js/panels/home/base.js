@@ -1,134 +1,80 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import { withRouter } from '@reyzitwo/react-router-vkminiapps';
 
 import {
-    Div,  
-    Alert, 
-    Group, 
-    Button, 
-    PanelHeader,
-    ScreenSpinner,
-    Snackbar,
-    Avatar
+    Button, CustomSelect, CustomSelectOption,
+    Div, FormItem,
+    Group, Input,
+    PanelHeader, Placeholder,
 } from '@vkontakte/vkui'
-import { Icon16Done } from '@vkontakte/icons'
-import img from '../../../svg/chel.svg'
+import {set} from "../../reducers/mainReducer"
+import {useDispatch, useSelector} from "react-redux";
+import {Icon28LocationOutline} from "@vkontakte/icons";
 
-function HomePanelBase({ router }) {
-    const [showImg, setShowImg] = useState(false)
-    const [snackbar, setSnackbar] = useState(null)
+function Home({ router, isDesktop }) {
+    const storage = useSelector((state) => state.main)
 
-    function openAlert() {
-        router.toPopout(
-            <Alert
-                actions={[{
-                    title: 'Нет',
-                    autoclose: true,
-                    mode: 'cancel',
-                }, {
-                    title: 'Да',
-                    autoclose: true,
-                    mode: 'destructive',
-                    action: () => setShowImg(true)
-                }]}
-                onClose={() => router.toPopout()}
-                header='Вопрос значит'
-                text='Вас роняли в детстве?'
-            />
-        )
-    }
-
-    async function openSpinner() {
-        router.toPopout(<ScreenSpinner/>)
-        await new Promise(resolve => setTimeout(resolve, 2000))
-        router.toPopout()
-    }
-
-    function openSnackbar() {
-        setSnackbar(
-            <Snackbar
-                layout='vertical'
-                onClose={() => setSnackbar(null)}
-                action='Например кнопка'
-                before={
-                    <Avatar size={24} style={{ background: 'var(--accent)' }}> 
-                        <Icon16Done fill='#fff'/> 
-                    </Avatar>
-                }
-            >
-                Какой-то текст
-            </Snackbar>
-        )
-    }
+    const [track, setTrack] = useState('')
+    const [statusTrack, setStatusTrack] = useState('default')
 
     return (
         <>
-            <PanelHeader separator={false}>Главная</PanelHeader>
+            <PanelHeader separator={false}>
+                Поиск
+            </PanelHeader>
             <Group>
-                <Div>
-                    <Button 
-                        size="l" 
-                        stretched
-                        mode="secondary" 
-                        onClick={() => router.toPanel('placeholder')}
+                {storage.track === '' && <>
+                    <Placeholder
+                        className={!isDesktop && 'trackPlaceholder'}
+                        icon={<Icon28LocationOutline width={56} height={56}/>}
+                        header='Привет!'
                     >
-                        Открыть Panel
-                    </Button>
-                </Div>
+                        Выбери свою службу доставки, введи трек-номер и мы её отследим!
+                    </Placeholder>
+                    <FormItem top='Выбери службу доставки' style={{marginTop: -40}}>
+                        <CustomSelect
+                            options={[
+                                {label: 'СДЭК', value: 0},
+                                {label: 'Почта России', value: 1}
+                            ]}
+                            renderOption={({ option, ...restProps }) => (
+                                <CustomSelectOption
+                                    {...restProps}
+                                />
+                            )}
+                            placeholder='Не выбрано'
+                        />
+                    </FormItem>
 
-                <Div>
-                    <Button 
-                        size="l" 
-                        stretched
-                        mode="secondary" 
-                        onClick={() => openAlert()}
-                    >
-                        Открыть Alert
-                    </Button>
-                </Div>
+                    <FormItem top='Введи трек-номер' status={statusTrack} bottom={statusTrack === 'error' && 'С этим полем что-то не так!'}>
+                        <Input
+                            value={track}
+                            onChange={(e) => {setStatusTrack('default'); setTrack(e.currentTarget.value)}}
+                            placeholder='Введи номер сюда'
+                        />
+                    </FormItem>
 
-                <Div>
-                    <Button 
-                        size="l" 
-                        stretched
-                        mode="secondary" 
-                        onClick={() => openSpinner()}
-                    >
-                        Открыть ScreenSpinner
-                    </Button>
-                </Div>
-
-                <Div>
-                    <Button
-                        size="l" 
-                        stretched
-                        mode="secondary" 
-                        onClick={() => openSnackbar()}
-                    >
-                        Открыть Snackbar
-                    </Button>
-                </Div>
-
-                <Div>
-                    <Button 
-                        size="l" 
-                        stretched
-                        mode="secondary" 
-                        onClick={() => router.toModal('botsList')}
-                    >
-                        Открыть ModalPage
-                    </Button>
-                </Div>
-
-                {showImg && 
-                    <Div className='div-center'>
-                        <img src={img} alt="чел"/>
+                    <Div>
+                        <Button
+                            size='l'
+                            stretched
+                            style={{marginTop: -10}}
+                            onClick={() => {
+                                if (track.length === 0) {
+                                    setStatusTrack('error')
+                                    return
+                                }
+                            }
+                            }
+                        >
+                            Отследить
+                        </Button>
                     </Div>
-                }
+
+                </>}
             </Group>
-            {snackbar}
         </>
-    );
+    )
 }
 
-export default withRouter(HomePanelBase);
+export default withRouter(Home);
