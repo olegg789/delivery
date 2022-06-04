@@ -8,7 +8,6 @@ import {
     Footer,
     FormItem,
     Group,
-    Header,
     Link,
     PanelHeader
 } from "@vkontakte/vkui";
@@ -60,7 +59,7 @@ function Favorite({ router }) {
             </PanelHeader>
             <Group>
                 <Div>
-                    <Card mode='outline'>
+                    <Card>
                         <FormItem top='Посылка из почты России'>
                             Надувной бассейн
                         </FormItem>

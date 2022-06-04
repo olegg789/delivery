@@ -13,9 +13,18 @@ import {Icon28LocationOutline} from "@vkontakte/icons";
 
 function Home({ router, isDesktop }) {
     const storage = useSelector((state) => state.main)
+    const dispatch = useDispatch()
 
-    const [track, setTrack] = useState('')
+    const [track, setTrack] = useState(storage.parcelTrack)
     const [statusTrack, setStatusTrack] = useState('default')
+    const [statusService, setStatusService] = useState('default')
+    const [service, setService] = useState(storage.service)
+
+    function openParcelInfo() {
+        dispatch(set({ key: 'parcelTrack', value: track }))
+        dispatch(set({key: 'service', value: service}))
+        router.toPanel('infoParcel')
+    }
 
     return (
         <>
@@ -31,8 +40,17 @@ function Home({ router, isDesktop }) {
                     >
                         Выбери свою службу доставки, введи трек-номер и мы её отследим!
                     </Placeholder>
-                    <FormItem top='Выбери службу доставки' style={{marginTop: -40}}>
+                    <FormItem
+                        top='Выбери службу доставки'
+                        style={{marginTop: -40}} status={statusService}
+                        bottom={statusService === 'error' && 'С этим полем что-то не так!'}
+                    >
                         <CustomSelect
+                            value={service}
+                            onChange={(e) => {
+                                setService(e.currentTarget.value);
+                                setStatusService('default')
+                            }}
                             options={[
                                 {label: 'СДЭК', value: 0},
                                 {label: 'Почта России', value: 1}
@@ -49,7 +67,11 @@ function Home({ router, isDesktop }) {
                     <FormItem top='Введи трек-номер' status={statusTrack} bottom={statusTrack === 'error' && 'С этим полем что-то не так!'}>
                         <Input
                             value={track}
-                            onChange={(e) => {setStatusTrack('default'); setTrack(e.currentTarget.value)}}
+                            onChange={(e) => {
+                                if (e.currentTarget.value.length > 14) return
+                                setStatusTrack('default');
+                                setTrack(e.currentTarget.value)}
+                            }
                             placeholder='Введи номер сюда'
                         />
                     </FormItem>
@@ -58,12 +80,16 @@ function Home({ router, isDesktop }) {
                         <Button
                             size='l'
                             stretched
-                            style={{marginTop: -10}}
                             onClick={() => {
-                                if (track.length === 0) {
+                                if (service === undefined) {
+                                    setStatusService('error')
+                                    return
+                                }
+                                if (track === undefined || track.length === 0) {
                                     setStatusTrack('error')
                                     return
                                 }
+                                openParcelInfo()
                             }
                             }
                         >

@@ -1,20 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useSelector } from "react-redux";
 import { withRouter } from '@reyzitwo/react-router-vkminiapps';
 import {
-    Cell, 
-    List, 
-    Avatar, 
-    InfoRow, 
-    ModalPage, 
-    ModalPageHeader, 
+    ModalPage,
+    ModalPageHeader,
     PanelHeaderButton,
-    IOS
+    IOS, FormLayout, FormItem, Input, Div, Button
 } from "@vkontakte/vkui";
 import { Icon24Dismiss, Icon24Cancel } from '@vkontakte/icons'
 
 function BotsListModal({ nav, router }) {
     const platform = useSelector((state) => state.main.platform)
+
+    const [name, setName] = useState('')
 
     return (
         <ModalPage
@@ -33,38 +31,34 @@ function BotsListModal({ nav, router }) {
                         </PanelHeaderButton>
                     }
                 >
-                    Информация о сообществе
+                    Добавить в избранное
                 </ModalPageHeader>
             }
             onClose={() => router.toBack()}
             settlingHeight={100}
         >
-            <Cell
-                description="Описание"
-                before={<Avatar size={40} src="https://vk.com/images/community_100.png?ava=1"/>}
-            >
-                Название
-            </Cell>
+            <FormLayout>
+                <FormItem top='Введите имя посылки (опционально)'>
+                    <Input
+                        value={name}
+                        onChange={(e) => {
+                            if (e.currentTarget.value.length > 30) return
+                            setName(e.currentTarget.value)
+                        }}
+                        placeholder='Очень важная посылка'
+                    />
+                </FormItem>
+                <Div>
+                    <Button
+                        size='l'
+                        stretched
+                        onClick={() => router.toModal()}
+                    >
+                        Сохранить
+                    </Button>
+                </Div>
 
-            <List>
-                <Cell>
-                    <InfoRow header="Подписчиков">
-                            8800
-                    </InfoRow>
-                </Cell>
-
-                <Cell>
-                    <InfoRow header="Записей">
-                        555
-                    </InfoRow>
-                </Cell>
-
-                <Cell>
-                    <InfoRow header="Рейтинг">
-                        3535
-                    </InfoRow>
-                </Cell>
-            </List>
+            </FormLayout>
         </ModalPage>
     );
 }

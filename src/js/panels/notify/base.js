@@ -3,9 +3,14 @@ import { withRouter } from '@reyzitwo/react-router-vkminiapps';
 
 import {
     PanelHeader,
-    Group, Placeholder, FormLayoutGroup, FormItem, SimpleCell, Card, Div
+    Group,
+    FormLayoutGroup,
+    FormItem,
+    SimpleCell,
+    Card,
+    Div
 } from "@vkontakte/vkui";
-import {Icon28Notifications, Icon28PaperplaneOutline} from "@vkontakte/icons";
+import {Icon28PaperplaneOutline} from "@vkontakte/icons";
 
 function Notify({ router }) {
     return (

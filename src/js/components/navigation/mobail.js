@@ -8,7 +8,6 @@ import {
 import {
 	Icon28FavoriteOutline,
 	Icon28HistoryBackwardOutline,
-	Icon28InfoCircleOutline,
 	Icon28Notifications,
 	Icon28SearchOutline
 } from '@vkontakte/icons';

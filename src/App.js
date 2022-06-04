@@ -1,4 +1,4 @@
-import React, {Suspense, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from '@reyzitwo/react-router-vkminiapps';
 
@@ -12,7 +12,6 @@ import {
   View,
   Panel,
   ModalRoot,
-  ScreenSpinner,
   usePlatform,
   VKCOM,
   withAdaptivity,
@@ -25,14 +24,14 @@ import DesktopNavigation from './js/components/navigation/desktop';
 import MobailNavigation from './js/components/navigation/mobail';
 
 import HomeBotsListModal from './js/components/modals/HomeBotsListModal';
-import HomeBotInfoModal from './js/components/modals/HomeBotInfoModal';
+import AddToFav from './js/components/modals/AddToFav';
 
 import Favorite from "./js/panels/favorite/base";
 import History from "./js/panels/history/base";
 import Home from "./js/panels/home/base"
 import Notify from "./js/panels/notify/base";
 
-import HomePanelPlaceholder from "./js/panels/home/infoParcel";
+import InfoParcel from "./js/panels/home/infoParcel";
 
 const App = withAdaptivity(({ viewWidth, router }) => {
   const mainStorage = useSelector((state) => state.main)
@@ -63,7 +62,7 @@ const App = withAdaptivity(({ viewWidth, router }) => {
   const modals = (
     <ModalRoot activeModal={router.modal} onClose={() => router.toBack()}>
       <HomeBotsListModal nav="botsList"/>
-      <HomeBotInfoModal nav="botInfo"/>
+      <AddToFav nav="addToFav"/>
     </ModalRoot>
   );
 
@@ -96,10 +95,8 @@ const App = withAdaptivity(({ viewWidth, router }) => {
                   />
                 </Panel>
 
-                <Panel id='placeholder'>
-                  <Suspense fallback={<ScreenSpinner/>}>
-                    <HomePanelPlaceholder/>
-                  </Suspense>
+                <Panel id='infoParcel'>
+                    <InfoParcel/>
                 </Panel>
               </View>
 

@@ -9,8 +9,8 @@ const structure = [
 			},
 
 			{
-				id: "placeholder",
-				hash: '/placeholder'
+				id: "infoParcel",
+				hash: '/infoParcel'
 			}
 		]
 	},
