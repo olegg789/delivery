@@ -11,6 +11,11 @@ const structure = [
 			{
 				id: "infoParcel",
 				hash: '/infoParcel'
+			},
+
+			{
+				id: 'about',
+				hash: '/'
 			}
 		]
 	},
@@ -45,20 +50,14 @@ const structure = [
 			{
 				id: "base",
 				hash: '/base'
-			}
-		]
-	},
+			},
 
-	{
-		id: "about",
-		hash: "about",
-		panels: [
 			{
-				id: "base",
-				hash: '/base'
+				id: 'historyParcel',
+				hash: '/'
 			}
 		]
-	},
+	}
 ]
 
 export default structure

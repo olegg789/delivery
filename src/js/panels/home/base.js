@@ -2,33 +2,53 @@ import React, {useState} from 'react';
 import { withRouter } from '@reyzitwo/react-router-vkminiapps';
 
 import {
-    Button, CustomSelect, CustomSelectOption,
+    Button,
     Div, FormItem,
     Group, Input,
-    PanelHeader, Placeholder,
+    PanelHeader, PanelHeaderButton, Placeholder, ScreenSpinner,
 } from '@vkontakte/vkui'
 import {set} from "../../reducers/mainReducer"
 import {useDispatch, useSelector} from "react-redux";
-import {Icon28LocationOutline} from "@vkontakte/icons";
+import {Icon28CancelCircleOutline, Icon28InfoCircleOutline, Icon28LocationOutline} from "@vkontakte/icons";
+import api from "../../../apiFunc";
 
-function Home({ router, isDesktop }) {
+function Home({ router, isDesktop, openSnackbar, snackbar }) {
     const storage = useSelector((state) => state.main)
     const dispatch = useDispatch()
 
     const [track, setTrack] = useState(storage.parcelTrack)
     const [statusTrack, setStatusTrack] = useState('default')
-    const [statusService, setStatusService] = useState('default')
-    const [service, setService] = useState(storage.service)
 
-    function openParcelInfo() {
-        dispatch(set({ key: 'parcelTrack', value: track }))
-        dispatch(set({key: 'service', value: service}))
-        router.toPanel('infoParcel')
+    async function openParcelInfo() {
+        try {
+            router.toPopout(<ScreenSpinner/>)
+            dispatch(set({ key: 'parcelTrack', value: track }))
+
+            let res = await api(`delivery/${track}`, 'GET')
+            router.toPopout()
+            if (res.response) {
+                dispatch(set({key: 'infoParcel', value: res.deliveryInfo}))
+                router.toPanel('infoParcel')
+            }
+            else {
+                if (res.error.code === 4) {
+                    openSnackbar('Трек-номер не найден!', <Icon28CancelCircleOutline className='snack_err'/>)
+                }
+            }
+
+        }
+        catch (err) {
+            console.log(err)
+        }
     }
 
     return (
         <>
-            <PanelHeader separator={false}>
+            <PanelHeader separator={false} left={
+                <PanelHeaderButton onClick={() => router.toPanel('about')}>
+                    <Icon28InfoCircleOutline/>
+                </PanelHeaderButton>
+            }>
                 Поиск
             </PanelHeader>
             <Group>
@@ -38,31 +58,8 @@ function Home({ router, isDesktop }) {
                         icon={<Icon28LocationOutline width={56} height={56}/>}
                         header='Привет!'
                     >
-                        Выбери свою службу доставки, введи трек-номер и мы её отследим!
+                        Введи трек-номер посылки из <b>СДЭК</b> или <b>Почты России</b> и мы её отследим!
                     </Placeholder>
-                    <FormItem
-                        top='Выбери службу доставки'
-                        style={{marginTop: -40}} status={statusService}
-                        bottom={statusService === 'error' && 'С этим полем что-то не так!'}
-                    >
-                        <CustomSelect
-                            value={service}
-                            onChange={(e) => {
-                                setService(e.currentTarget.value);
-                                setStatusService('default')
-                            }}
-                            options={[
-                                {label: 'СДЭК', value: 0},
-                                {label: 'Почта России', value: 1}
-                            ]}
-                            renderOption={({ option, ...restProps }) => (
-                                <CustomSelectOption
-                                    {...restProps}
-                                />
-                            )}
-                            placeholder='Не выбрано'
-                        />
-                    </FormItem>
 
                     <FormItem top='Введи трек-номер' status={statusTrack} bottom={statusTrack === 'error' && 'С этим полем что-то не так!'}>
                         <Input
@@ -81,10 +78,6 @@ function Home({ router, isDesktop }) {
                             size='l'
                             stretched
                             onClick={() => {
-                                if (service === undefined) {
-                                    setStatusService('error')
-                                    return
-                                }
                                 if (track === undefined || track.length === 0) {
                                     setStatusTrack('error')
                                     return

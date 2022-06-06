@@ -5,15 +5,19 @@ import {
     PanelHeader,
     PanelHeaderBack,
     Placeholder,
-    Group, Header, SimpleCell, Div, Separator, Button, FormItem
+    Group, Header, SimpleCell, Div, Separator, FormItem
 } from "@vkontakte/vkui";
 import {Icon28LocationOutline} from '@vkontakte/icons';
 import {useSelector} from "react-redux";
 
-function InfoParcel({ router, snackbar }) {
+function HistoryParcel({ router, snackbar }) {
     const storage = useSelector((state) => state.main)
 
-    console.log(storage.infoParcel)
+    console.log(storage.historyInfo)
+    console.log(storage.historyInfoHistory)
+
+    const info = storage.historyInfo
+    const history = storage.historyInfoHistory
 
     return(
         <>
@@ -27,28 +31,22 @@ function InfoParcel({ router, snackbar }) {
             <Group>
                 <Placeholder
                     icon={<Icon28LocationOutline width={56} height={56}/>}
-                    header={'Посылка ' + storage.parcelTrack}
-                    action={!storage.infoParcel.delivered &&
-                        <Button
-                            stretched
-                            size='m'
-                            onClick={() => router.toModal('addToFav')}
-                        >
-                            Добавить в избранное
-                        </Button>
-                    }
+                    header={'Посылка ' + info.name}
                 >
-                    Отправитель: {storage.infoParcel.sender !== null ? storage.infoParcel.sender : 'Неизвестно'} <br/>
-                    Получатель: {storage.infoParcel.recipient} <br/>
-                    Вес: {storage.infoParcel.weight !== null ? storage.infoParcel.weight : 'Неизвестно'}
+                    Получатель: {info.recipient} <br/>
+                    Вес: {info.weight !== null ? info.weight : 'Неизвестно'}
                 </Placeholder>
-                <Group header={<Header mode='secondary'>История перемещений ({storage.infoParcel.history.length})</Header> } separator={"hide"}>
-                    {storage.infoParcel.history.length !== 0 &&
-                        storage.infoParcel.history.map((el) => {
+                <Group
+                    header={
+                        <Header mode='secondary'>
+                            История перемещений ({history.length})
+                        </Header> }
+                    separator={"hide"}
+                >
+                    {history.length !== 0 &&
+                        history.map((el) => {
                             const date = new Date(
-                                el.date.split('-')[0],
-                                Number(el.date.split('-')[1]) - 1,
-                                el.date.split('-')[2]
+                                el.date
                             ).toLocaleString('ru', {
                                 year: 'numeric',
                                 month: 'long',
@@ -72,9 +70,8 @@ function InfoParcel({ router, snackbar }) {
                     }
                 </Group>
             </Group>
-            {snackbar}
         </>
     )
 }
 
-export default withRouter(InfoParcel);
+export default withRouter(HistoryParcel);

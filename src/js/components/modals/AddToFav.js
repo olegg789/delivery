@@ -7,12 +7,39 @@ import {
     PanelHeaderButton,
     IOS, FormLayout, FormItem, Input, Div, Button
 } from "@vkontakte/vkui";
-import { Icon24Dismiss, Icon24Cancel } from '@vkontakte/icons'
+import {
+    Icon24Dismiss,
+    Icon24Cancel,
+    Icon28CancelCircleOutline,
+    Icon28CheckCircleOutline
+} from '@vkontakte/icons'
+import api from "../../../apiFunc";
 
-function BotsListModal({ nav, router }) {
+function AddToFav({ nav, router, storage, openSnackbar, getFavorites, acceptNotify }) {
     const platform = useSelector((state) => state.main.platform)
 
     const [name, setName] = useState('')
+
+    async function addToVaf() {
+        try {
+            let res = await api(`favorites/${storage.parcelTrack}`, 'POST', (name.length !== 0) ? {name: name} : {})
+            if (res.response) {
+                router.toModal()
+                openSnackbar('Посылка сохранена!', <Icon28CheckCircleOutline className='snack_suc'/>)
+                getFavorites()
+                acceptNotify()
+            }
+            else {
+                if (res.error.code === 3) {
+                    router.toModal()
+                    openSnackbar('Посылка уже в избранном!', <Icon28CancelCircleOutline className='snack_err'/>)
+                }
+            }
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
 
     return (
         <ModalPage
@@ -52,7 +79,7 @@ function BotsListModal({ nav, router }) {
                     <Button
                         size='l'
                         stretched
-                        onClick={() => router.toModal()}
+                        onClick={() => addToVaf()}
                     >
                         Сохранить
                     </Button>
@@ -63,4 +90,4 @@ function BotsListModal({ nav, router }) {
     );
 }
 
-export default withRouter(BotsListModal);
+export default withRouter(AddToFav);

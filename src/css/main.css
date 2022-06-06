@@ -60,3 +60,15 @@ body[scheme=vkcom_dark] .vkuiGradient--md-tint.vkuiGradient--to-top {
     left: 87%;
     top: 10%
 }
+
+.snack_err {
+    color: var(--destructive)
+}
+
+.snack_suc {
+    color: var(--dynamic_green)
+}
+
+.fav_placeholder {
+    margin-top: calc(100% / 3);
+}

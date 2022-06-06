@@ -4,45 +4,34 @@ import { withRouter } from '@reyzitwo/react-router-vkminiapps';
 import {
     PanelHeader,
     Group,
-    FormLayoutGroup,
-    FormItem,
-    SimpleCell,
-    Card,
-    Div
+    Placeholder, Button
 } from "@vkontakte/vkui";
-import {Icon28PaperplaneOutline} from "@vkontakte/icons";
+import {Icon56NotificationOutline} from "@vkontakte/icons";
 
-function Notify({ router }) {
+function Notify({ router, storage, acceptNotify }) {
     return (
         <>
             <PanelHeader separator={false}>
                 Уведомления
             </PanelHeader>
             <Group>
-                <FormLayoutGroup>
-                    <Div>
-                        <Card>
-                            <FormItem top='Посылка 23527592384' bottom='5 минут назад'>
-                                <SimpleCell disabled before={<Icon28PaperplaneOutline/>}>
-                                    Покинуло сортировочный центр
-                                </SimpleCell>
-                            </FormItem>
-                        </Card>
-                    </Div>
+                <Placeholder
+                    icon={<Icon56NotificationOutline width={56} height={56}/>}
+                    header='Включи уведомления!'
+                    action={
+                        <Button
+                            size='m'
+                            stretched
+                            onClick={() => acceptNotify()}
+                        >
+                            Включить
+                        </Button>
+                    }
+                    className={!storage.isDesktop && 'fav_placeholder'}
+                >
+                    С помощью этого мы сможем оперативно уведомлять тебя об обновлениях статуса твоей посылки
+                </Placeholder>
 
-                    <Div>
-                        <Card>
-                            <FormItem top='Посылка Надувной бассейн' bottom='Вчера'>
-                                <SimpleCell
-                                    disabled
-                                    before={<Icon28PaperplaneOutline/>}
-                                >
-                                    Прибыло в место вручения
-                                </SimpleCell>
-                            </FormItem>
-                        </Card>
-                    </Div>
-                </FormLayoutGroup>
             </Group>
         </>
     )
