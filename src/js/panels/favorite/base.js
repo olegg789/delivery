@@ -74,7 +74,7 @@ function Favorite({ router, storage, getFavorites, openSnackbar }) {
         try {
             let res = await api(`favorites/${Number(code)}`, 'GET')
             if (res.response) {
-                dispatch(set(({key: 'history', value: res.items})))
+                dispatch(set(({key: 'historyFav', value: res.items})))
                 router.toModal('historyFav')
             }
         }

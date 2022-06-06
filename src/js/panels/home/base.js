@@ -5,7 +5,7 @@ import {
     Button,
     Div, FormItem,
     Group, Input,
-    PanelHeader, PanelHeaderButton, Placeholder, ScreenSpinner,
+    PanelHeader, PanelHeaderButton, Placeholder,
 } from '@vkontakte/vkui'
 import {set} from "../../reducers/mainReducer"
 import {useDispatch, useSelector} from "react-redux";
@@ -21,11 +21,8 @@ function Home({ router, isDesktop, openSnackbar, snackbar }) {
 
     async function openParcelInfo() {
         try {
-            router.toPopout(<ScreenSpinner/>)
             dispatch(set({ key: 'parcelTrack', value: track }))
-
             let res = await api(`delivery/${track}`, 'GET')
-            router.toPopout()
             if (res.response) {
                 dispatch(set({key: 'infoParcel', value: res.deliveryInfo}))
                 router.toPanel('infoParcel')
@@ -48,7 +45,8 @@ function Home({ router, isDesktop, openSnackbar, snackbar }) {
                 <PanelHeaderButton onClick={() => router.toPanel('about')}>
                     <Icon28InfoCircleOutline/>
                 </PanelHeaderButton>
-            }>
+            } className='orange'
+            >
                 Поиск
             </PanelHeader>
             <Group>
@@ -75,6 +73,7 @@ function Home({ router, isDesktop, openSnackbar, snackbar }) {
 
                     <Div>
                         <Button
+                            className='orange'
                             size='l'
                             stretched
                             onClick={() => {

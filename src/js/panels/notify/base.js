@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { withRouter } from '@reyzitwo/react-router-vkminiapps';
 
 import {
@@ -9,12 +9,21 @@ import {
 import {Icon56NotificationOutline} from "@vkontakte/icons";
 import bridge from "@vkontakte/vk-bridge";
 
+let notifications = false
+
 function Notify({ router, storage, acceptNotify }) {
 
     async function check() {
         let res = await bridge.send("VKWebAppGetLaunchParams")
-        return res.vk_are_notifications_enabled
+        if (res.vk_are_notifications_enabled === 1) {
+            notifications = true
+        }
     }
+
+    useEffect(() => {
+        check()
+    }, [])
+
     return (
         <>
             <PanelHeader separator={false}>
@@ -29,9 +38,9 @@ function Notify({ router, storage, acceptNotify }) {
                             size='m'
                             stretched
                             onClick={() => acceptNotify()}
-                            disabled={check()}
+                            disabled={notifications}
                         >
-                            {!check() ? 'Включить' : 'У тебя уже включены уведомления'}
+                            {!notifications ? 'Включить' : 'У тебя уже включены уведомления'}
                         </Button>
                     }
                     className={!storage.isDesktop && 'fav_placeholder'}

@@ -1,5 +1,8 @@
 body[scheme=vkcom_dark] .vkuiGradient--md-tint.vkuiGradient--to-top {
     background: linear-gradient(to top,#333333,rgba(51, 51, 51,.98),rgba(51, 51, 51,.94),rgba(51, 51, 51,.88),rgba(51, 51, 51,.8),rgba(51, 51, 51,.71),rgba(51, 51, 51,.61),rgba(51, 51, 51,.5),rgba(51, 51, 51,.39),rgba(51, 51, 51,.29),rgba(51, 51, 51,.2),rgba(51, 51, 51,.12),rgba(51, 51, 51,.06),rgba(51, 51, 51,.02),rgba(51, 51, 51,0));
+}
+
+body {
     user-select: none;
 }
 
@@ -52,8 +55,8 @@ body[scheme=vkcom_dark] .vkuiGradient--md-tint.vkuiGradient--to-top {
     margin-top: calc(100% / 7);
 }
 
-.TabbarItem--selected .vkuiIcon {
-    transform: scale(1.3);
+.TabbarItem--selected {
+    color: #ff8e6e;
 }
 
 .actionsParcel {
@@ -72,4 +75,48 @@ body[scheme=vkcom_dark] .vkuiGradient--md-tint.vkuiGradient--to-top {
 
 .fav_placeholder {
     margin-top: calc(100% / 3);
+}
+
+.snack {
+    margin-bottom: -50px;
+}
+
+.orange {
+    color: #ff8e6e
+}
+
+.tabbar {
+    border-radius: 10px;
+}
+
+.vkuiPanelHeader__content-in {
+    color: #ff8e6e
+}
+
+.vkuiPanelHeader__left {
+    color: #ff8e6e
+}
+
+body[scheme=bright_light], [scheme=bright_light], .vkuibright_light {
+    --accent: #ff8e6e;
+    --accent_alternate: #ff8e6e;
+    --button_outline_border: #ff8e6e;
+    --button_outline_foreground: #ff8e6e;
+    --button_primary_background: #ff8e6e;
+}
+
+body[scheme=space_gray], [scheme=space_gray], .vkuispace_gray {
+    --accent: #ff8e6e;
+    --accent_alternate: #ff8e6e;
+    --button_outline_border: #ff8e6e;
+    --button_outline_foreground: #ff8e6e;
+    --button_primary_background: #ff8e6e
+}
+
+body[scheme=vkcom_light], [scheme=vkcom_light], .vkuivkcom_light {
+    --accent: #ff8e6e;
+    --accent_alternate: #ff8e6e;
+    --button_outline_border: #ff8e6e;
+    --button_outline_foreground: #ff8e6e;
+    --button_primary_background: #ff8e6e
 }

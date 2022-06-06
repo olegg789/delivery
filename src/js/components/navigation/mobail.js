@@ -29,28 +29,28 @@ function MobailNavigation({ router }) {
 	        selected={router.activeView === 'home'}
 	        onClick={() => openView('home')}
 	        text='Поиск'
-	      ><Icon28SearchOutline width={24} height={24}/></TabbarItem>
+	      ><Icon28SearchOutline/></TabbarItem>
 
 	      <TabbarItem
 	        data-id='notify'
 	        selected={router.activeView === 'notify'}
 					onClick={() => openView('notify')}
 	        text='Уведомления'
-	      ><Icon28Notifications width={24} height={24}/></TabbarItem>
+	      ><Icon28Notifications/></TabbarItem>
 
 			<TabbarItem
 				data-id='favorite'
 				selected={router.activeView === 'favorite'}
 				onClick={() => openView('favorite')}
 				text='Избранное'
-			><Icon28FavoriteOutline width={24} height={24}/></TabbarItem>
+			><Icon28FavoriteOutline /></TabbarItem>
 
 			<TabbarItem
 				data-id='history'
 				selected={router.activeView === 'history'}
 				onClick={() => openView('history')}
 				text='История'
-			><Icon28HistoryBackwardOutline width={24} height={24}/></TabbarItem>
+			><Icon28HistoryBackwardOutline /></TabbarItem>
 
 	    </Tabbar>
 	)

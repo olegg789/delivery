@@ -14,7 +14,7 @@ import {
   ModalRoot,
   usePlatform,
   VKCOM,
-  withAdaptivity, Snackbar, ScreenSpinner,
+  withAdaptivity, Snackbar,
 } from "@vkontakte/vkui";
 import bridge from "@vkontakte/vk-bridge";
 
@@ -35,6 +35,7 @@ import InfoParcel from "./js/panels/home/infoParcel";
 import api from "./apiFunc";
 import HistoryParcel from "./js/panels/history/infoParcel";
 import About from "./js/panels/home/About";
+import {Icon28CheckCircleOutline} from "@vkontakte/icons";
 
 const App = withAdaptivity(({ viewWidth, router }) => {
   const mainStorage = useSelector((state) => state.main)
@@ -51,7 +52,7 @@ const App = withAdaptivity(({ viewWidth, router }) => {
   async function openSnackbar(text, icon) {
     setSnackbar(
         <Snackbar
-            className='snack'
+            className={mainStorage.isDesktop && 'snack'}
             layout='vertical'
             onClose={() => setSnackbar(null)}
             before={icon}
@@ -75,12 +76,10 @@ const App = withAdaptivity(({ viewWidth, router }) => {
 
   async function getFavorites() {
     try {
-      router.toPopout(<ScreenSpinner/>)
       let res = await api('favorites', 'GET')
       if (res.response) {
         dispatch(set({key: 'favorites', value: res.items}))
         getHistory()
-        router.toPopout()
       }
 
     }
@@ -112,6 +111,9 @@ const App = withAdaptivity(({ viewWidth, router }) => {
           "VKWebAppAllowNotifications").then(
               async (res) => {
                   await api('profile', 'PATCH', {notifications: res.result})
+                if (res.result) {
+                  openSnackbar('Уведомления включены!', <Icon28CheckCircleOutline className='snack_suc'/>)
+                }
                 }
       )
     }
@@ -157,11 +159,11 @@ const App = withAdaptivity(({ viewWidth, router }) => {
                 modal={modals}
               >
                 <Panel id='base'>
-                  <Home
-                      isDesktop={mainStorage.isDesktop}
-                      openSnackbar={(text, icon) => openSnackbar(text, icon)}
-                      snackbar={snackbar}
-                  />
+                    <Home
+                        isDesktop={mainStorage.isDesktop}
+                        openSnackbar={(text, icon) => openSnackbar(text, icon)}
+                        snackbar={snackbar}
+                    />
                   {snackbar}
                 </Panel>
 
@@ -173,8 +175,8 @@ const App = withAdaptivity(({ viewWidth, router }) => {
 
                 <Panel id='about'>
                   <About/>
+                  {snackbar}
                 </Panel>
-                {snackbar}
               </View>
 
               <View 
@@ -188,6 +190,7 @@ const App = withAdaptivity(({ viewWidth, router }) => {
                       storage={mainStorage}
                       acceptNotify={() => acceptNotify()}
                   />
+                  {snackbar}
                 </Panel>
               </View>
 

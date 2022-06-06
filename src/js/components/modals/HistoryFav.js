@@ -35,7 +35,7 @@ function HistoryFav({ nav, router, storage }) {
             onClose={() => router.toBack()}
             settlingHeight={100}
         >
-            {storage.history.map((el) => {
+            {storage.historyFav.map((el) => {
                 const date = new Date(
                     el.date
                 ).toLocaleString('ru', {
