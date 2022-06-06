@@ -29,7 +29,7 @@ function HistoryFav({ nav, router, storage }) {
                         </PanelHeaderButton>
                     }
                 >
-                    История ({storage.history.length})
+                    История ({storage.historyFav.length})
                 </ModalPageHeader>
             }
             onClose={() => router.toBack()}

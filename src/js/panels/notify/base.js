@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { withRouter } from '@reyzitwo/react-router-vkminiapps';
 
 import {
@@ -7,22 +7,8 @@ import {
     Placeholder, Button
 } from "@vkontakte/vkui";
 import {Icon56NotificationOutline} from "@vkontakte/icons";
-import bridge from "@vkontakte/vk-bridge";
 
-let notifications = false
-
-function Notify({ router, storage, acceptNotify }) {
-
-    async function check() {
-        let res = await bridge.send("VKWebAppGetLaunchParams")
-        if (res.vk_are_notifications_enabled === 1) {
-            notifications = true
-        }
-    }
-
-    useEffect(() => {
-        check()
-    }, [])
+function Notify({ router, storage, acceptNotify, notifications }) {
 
     return (
         <>

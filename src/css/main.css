@@ -120,3 +120,11 @@ body[scheme=vkcom_light], [scheme=vkcom_light], .vkuivkcom_light {
     --button_outline_foreground: #ff8e6e;
     --button_primary_background: #ff8e6e
 }
+
+body[scheme=vkcom_dark], [scheme=vkcom_dark], .vkuivkcom_dark {
+    --accent: #ff8e6e;
+    --accent_alternate: #ff8e6e;
+    --button_outline_border: #ff8e6e;
+    --button_outline_foreground: #ff8e6e;
+    --button_primary_background: #ff8e6e
+}

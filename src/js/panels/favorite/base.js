@@ -12,7 +12,7 @@ import {
     PanelHeader, Placeholder
 } from "@vkontakte/vkui";
 import {
-    Icon28CancelCircleOutline,
+    Icon56CancelCircleOutline,
     Icon28CheckCircleOutline,
     Icon28CopyOutline,
     Icon28DeleteOutline, Icon28LocationOutline,
@@ -166,7 +166,7 @@ function Favorite({ router, storage, getFavorites, openSnackbar }) {
                         <Footer>Всего {storage.favorites.length} {declOfNum(storage.favorites.length, ['посылка', 'посылки', 'посылок'])}</Footer>
                     </>:
                     <Placeholder
-                        icon={<Icon28CancelCircleOutline width={56} height={56}/>}
+                        icon={<Icon56CancelCircleOutline width={56} height={56}/>}
                         header='Упс...'
                         action={
                             <Button

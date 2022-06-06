@@ -12,6 +12,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {Icon28CancelCircleOutline, Icon28InfoCircleOutline, Icon28LocationOutline} from "@vkontakte/icons";
 import api from "../../../apiFunc";
 
+let loading = false
+
 function Home({ router, isDesktop, openSnackbar, snackbar }) {
     const storage = useSelector((state) => state.main)
     const dispatch = useDispatch()
@@ -21,8 +23,10 @@ function Home({ router, isDesktop, openSnackbar, snackbar }) {
 
     async function openParcelInfo() {
         try {
+            loading = true
             dispatch(set({ key: 'parcelTrack', value: track }))
             let res = await api(`delivery/${track}`, 'GET')
+            loading = false
             if (res.response) {
                 dispatch(set({key: 'infoParcel', value: res.deliveryInfo}))
                 router.toPanel('infoParcel')
@@ -76,6 +80,7 @@ function Home({ router, isDesktop, openSnackbar, snackbar }) {
                             className='orange'
                             size='l'
                             stretched
+                            loading={loading}
                             onClick={() => {
                                 if (track === undefined || track.length === 0) {
                                     setStatusTrack('error')

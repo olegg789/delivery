@@ -37,6 +37,8 @@ import HistoryParcel from "./js/panels/history/infoParcel";
 import About from "./js/panels/home/About";
 import {Icon28CheckCircleOutline} from "@vkontakte/icons";
 
+let notifications = false
+
 const App = withAdaptivity(({ viewWidth, router }) => {
   const mainStorage = useSelector((state) => state.main)
   const dispatch = useDispatch()
@@ -88,6 +90,13 @@ const App = withAdaptivity(({ viewWidth, router }) => {
     }
   }
 
+  async function check() {
+    let res = await bridge.send("VKWebAppGetLaunchParams")
+    if (res.vk_are_notifications_enabled === 1) {
+      notifications = true
+    }
+  }
+
   async function getAppScheme() {
     bridge.subscribe((e) => {
       if (e.detail.type === 'VKWebAppUpdateConfig') {
@@ -102,6 +111,7 @@ const App = withAdaptivity(({ viewWidth, router }) => {
   useEffect(() => {
     getAppScheme();
     getFavorites();
+    check()
   }, [])
 
   async function acceptNotify() {
@@ -113,6 +123,7 @@ const App = withAdaptivity(({ viewWidth, router }) => {
                   await api('profile', 'PATCH', {notifications: res.result})
                 if (res.result) {
                   openSnackbar('Уведомления включены!', <Icon28CheckCircleOutline className='snack_suc'/>)
+                  notifications = true
                 }
                 }
       )
@@ -136,7 +147,7 @@ const App = withAdaptivity(({ viewWidth, router }) => {
   );
 
   return(
-    <ConfigProvider platform={mainStorage.platform} scheme={scheme} isWebView>
+    <ConfigProvider platform={mainStorage.platform === 'ios' ? 'ios' : 'android'} scheme={scheme} isWebView>
       <AppRoot>
         <SplitLayout
           header={mainStorage.hasHeader && <PanelHeader separator={false} />}
@@ -189,6 +200,7 @@ const App = withAdaptivity(({ viewWidth, router }) => {
                   <Notify
                       storage={mainStorage}
                       acceptNotify={() => acceptNotify()}
+                      notifications={notifications}
                   />
                   {snackbar}
                 </Panel>

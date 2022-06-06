@@ -7,7 +7,7 @@ import {
     Placeholder,
     Group, Header, SimpleCell, Div, Separator, Button, FormItem
 } from "@vkontakte/vkui";
-import {Icon28LocationOutline} from '@vkontakte/icons';
+import { Icon56PlaceOutline} from '@vkontakte/icons';
 import {useSelector} from "react-redux";
 
 function InfoParcel({ router, snackbar }) {
@@ -26,7 +26,7 @@ function InfoParcel({ router, snackbar }) {
 
             <Group>
                 <Placeholder
-                    icon={<Icon28LocationOutline width={56} height={56}/>}
+                    icon={<Icon56PlaceOutline/>}
                     header={'Посылка ' + storage.parcelTrack}
                     action={!storage.infoParcel.delivered &&
                         <Button
@@ -42,6 +42,7 @@ function InfoParcel({ router, snackbar }) {
                     Получатель: {storage.infoParcel.recipient} <br/>
                     Вес: {storage.infoParcel.weight !== null ? storage.infoParcel.weight : 'Неизвестно'}
                 </Placeholder>
+            </Group>
                 <Group header={<Header mode='secondary'>История перемещений ({storage.infoParcel.history.length})</Header> } separator={"hide"}>
                     {storage.infoParcel.history.length !== 0 &&
                         storage.infoParcel.history.map((el) => {
@@ -70,7 +71,6 @@ function InfoParcel({ router, snackbar }) {
                             )
                         })
                     }
-                </Group>
             </Group>
             {snackbar}
         </>
