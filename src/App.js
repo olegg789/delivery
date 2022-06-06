@@ -147,7 +147,7 @@ const App = withAdaptivity(({ viewWidth, router }) => {
   );
 
   return(
-    <ConfigProvider platform={mainStorage.platform === 'ios' ? 'ios' : 'android'} scheme={scheme} isWebView>
+    <ConfigProvider platform={mainStorage.platform} scheme={scheme} isWebView>
       <AppRoot>
         <SplitLayout
           header={mainStorage.hasHeader && <PanelHeader separator={false} />}
