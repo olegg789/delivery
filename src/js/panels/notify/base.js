@@ -7,8 +7,14 @@ import {
     Placeholder, Button
 } from "@vkontakte/vkui";
 import {Icon56NotificationOutline} from "@vkontakte/icons";
+import bridge from "@vkontakte/vk-bridge";
 
 function Notify({ router, storage, acceptNotify }) {
+
+    async function check() {
+        let res = await bridge.send("VKWebAppGetLaunchParams")
+        return res.vk_are_notifications_enabled
+    }
     return (
         <>
             <PanelHeader separator={false}>
@@ -23,8 +29,9 @@ function Notify({ router, storage, acceptNotify }) {
                             size='m'
                             stretched
                             onClick={() => acceptNotify()}
+                            disabled={check()}
                         >
-                            Включить
+                            {!check() ? 'Включить' : 'У тебя уже включены уведомления'}
                         </Button>
                     }
                     className={!storage.isDesktop && 'fav_placeholder'}

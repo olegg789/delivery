@@ -61,23 +61,11 @@ const App = withAdaptivity(({ viewWidth, router }) => {
     )
   }
 
-  async function getNotifications() {
-    try {
-      let res = await api('notifications', 'GET')
-      console.log(res)
-    }
-    catch (err) {
-      console.log(err)
-    }
-  }
-
   async function getHistory() {
     try {
       let res = await api('history')
       if (res.response) {
         dispatch(set({key: 'history', value: res.items}))
-        console.log(res.items)
-        getNotifications()
       }
     }
     catch (err) {
@@ -90,7 +78,6 @@ const App = withAdaptivity(({ viewWidth, router }) => {
       router.toPopout(<ScreenSpinner/>)
       let res = await api('favorites', 'GET')
       if (res.response) {
-        console.log(res)
         dispatch(set({key: 'favorites', value: res.items}))
         getHistory()
         router.toPopout()
