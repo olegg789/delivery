@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { withRouter } from '@reyzitwo/react-router-vkminiapps';
 
 import {
@@ -9,7 +9,11 @@ import {
 } from '@vkontakte/vkui'
 import {set} from "../../reducers/mainReducer"
 import {useDispatch, useSelector} from "react-redux";
-import {Icon28CancelCircleOutline, Icon28InfoCircleOutline, Icon28LocationOutline} from "@vkontakte/icons";
+import {
+    Icon28CancelCircleOutline,
+    Icon28InfoCircleOutline,
+    Icon56PlaceOutline
+} from "@vkontakte/icons";
 import api from "../../../apiFunc";
 
 let loading = false
@@ -20,6 +24,10 @@ function Home({ router, isDesktop, openSnackbar, snackbar }) {
 
     const [track, setTrack] = useState(storage.parcelTrack)
     const [statusTrack, setStatusTrack] = useState('default')
+
+    useEffect(() => {
+        loading = false
+    }, [])
 
     async function openParcelInfo() {
         try {
@@ -57,7 +65,7 @@ function Home({ router, isDesktop, openSnackbar, snackbar }) {
                 {storage.track === '' && <>
                     <Placeholder
                         className={!isDesktop && 'trackPlaceholder'}
-                        icon={<Icon28LocationOutline width={56} height={56}/>}
+                        icon={<Icon56PlaceOutline/>}
                         header='Привет!'
                     >
                         Введи трек-номер посылки из <b>СДЭК</b> или <b>Почты России</b> и мы её отследим!
@@ -80,6 +88,7 @@ function Home({ router, isDesktop, openSnackbar, snackbar }) {
                             className='orange'
                             size='l'
                             stretched
+                            hasActive={false}
                             loading={loading}
                             onClick={() => {
                                 if (track === undefined || track.length === 0) {

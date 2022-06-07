@@ -25,11 +25,11 @@ import MobailNavigation from './js/components/navigation/mobail';
 
 import HistoryFav from './js/components/modals/HistoryFav';
 import AddToFav from './js/components/modals/AddToFav';
+import OnNotifications from "./js/components/modals/OnNotifications";
 
 import Favorite from "./js/panels/favorite/base";
 import History from "./js/panels/history/base";
 import Home from "./js/panels/home/base"
-import Notify from "./js/panels/notify/base";
 
 import InfoParcel from "./js/panels/home/infoParcel";
 import api from "./apiFunc";
@@ -38,6 +38,7 @@ import About from "./js/panels/home/About";
 import {Icon28CheckCircleOutline} from "@vkontakte/icons";
 
 let notifications = false
+let loadNotify = false
 
 const App = withAdaptivity(({ viewWidth, router }) => {
   const mainStorage = useSelector((state) => state.main)
@@ -115,6 +116,7 @@ const App = withAdaptivity(({ viewWidth, router }) => {
   }, [])
 
   async function acceptNotify() {
+    loadNotify = true
     let res = await bridge.send("VKWebAppGetLaunchParams")
     if (!res.vk_are_notifications_enabled) {
       bridge.send(
@@ -122,12 +124,13 @@ const App = withAdaptivity(({ viewWidth, router }) => {
               async (res) => {
                   await api('profile', 'PATCH', {notifications: res.result})
                 if (res.result) {
-                  openSnackbar('Уведомления включены!', <Icon28CheckCircleOutline className='snack_suc'/>)
                   notifications = true
+                  openSnackbar('Уведомления включены!', <Icon28CheckCircleOutline className='snack_suc'/>)
                 }
                 }
       )
     }
+    loadNotify = false
   }
 
   const modals = (
@@ -142,6 +145,13 @@ const App = withAdaptivity(({ viewWidth, router }) => {
           openSnackbar={(text, icon) => openSnackbar(text, icon)}
           getFavorites={() => getFavorites()}
           acceptNotify={() => acceptNotify()}
+          notifications={notifications}
+      />
+      <OnNotifications
+          nav='onNotifications'
+          acceptNotify={() => acceptNotify()}
+          notifications={notifications}
+          loadNotify={loadNotify}
       />
     </ModalRoot>
   );
@@ -186,22 +196,6 @@ const App = withAdaptivity(({ viewWidth, router }) => {
 
                 <Panel id='about'>
                   <About/>
-                  {snackbar}
-                </Panel>
-              </View>
-
-              <View 
-                id="notify"
-                activePanel={router.activePanel === 'route_modal' ? 'base' : router.activePanel}
-                popout={router.popout}
-                modal={modals}
-              >
-                <Panel id='base'>
-                  <Notify
-                      storage={mainStorage}
-                      acceptNotify={() => acceptNotify()}
-                      notifications={notifications}
-                  />
                   {snackbar}
                 </Panel>
               </View>

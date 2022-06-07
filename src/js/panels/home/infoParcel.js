@@ -13,8 +13,6 @@ import {useSelector} from "react-redux";
 function InfoParcel({ router, snackbar }) {
     const storage = useSelector((state) => state.main)
 
-    console.log(storage.infoParcel)
-
     return(
         <>
             <PanelHeader 
@@ -38,18 +36,21 @@ function InfoParcel({ router, snackbar }) {
                         </Button>
                     }
                 >
-                    Отправитель: {storage.infoParcel.sender !== null ? storage.infoParcel.sender : 'Неизвестно'} <br/>
-                    Получатель: {storage.infoParcel.recipient} <br/>
-                    Вес: {storage.infoParcel.weight !== null ? storage.infoParcel.weight : 'Неизвестно'}
+                    Служба доставки: {storage.infoParcel.service === 1 ? 'Почта России' : 'СДЭК'}<br/>
+                    Отправитель: {storage.infoParcel.sender !== null ? storage.infoParcel.sender : 'Неизвестно'}<br/>
+                    Получатель: {storage.infoParcel.recipient}<br/>
+                    Вес: {storage.infoParcel.weight !== null ? (storage.infoParcel.weight + ' г.') : 'Неизвестно'}
                 </Placeholder>
             </Group>
-                <Group header={<Header mode='secondary'>История перемещений ({storage.infoParcel.history.length})</Header> } separator={"hide"}>
+                <Group header={
+                    <Header mode='secondary'>
+                        История перемещений ({storage.infoParcel.history.length})
+                    </Header>
+                }>
                     {storage.infoParcel.history.length !== 0 &&
                         storage.infoParcel.history.map((el) => {
                             const date = new Date(
-                                el.date.split('-')[0],
-                                Number(el.date.split('-')[1]) - 1,
-                                el.date.split('-')[2]
+                                el.date
                             ).toLocaleString('ru', {
                                 year: 'numeric',
                                 month: 'long',

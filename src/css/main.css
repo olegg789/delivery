@@ -4,6 +4,15 @@ body[scheme=vkcom_dark] .vkuiGradient--md-tint.vkuiGradient--to-top {
 
 body {
     user-select: none;
+    overflow-x: hidden;
+}
+
+.vkuiPanel {
+    overflow-x: hidden;
+}
+
+:root {
+    overflow-x: hidden;
 }
 
 .div-center {
@@ -127,4 +136,10 @@ body[scheme=vkcom_dark], [scheme=vkcom_dark], .vkuivkcom_dark {
     --button_outline_border: #ff8e6e;
     --button_outline_foreground: #ff8e6e;
     --button_primary_background: #ff8e6e
+}
+
+.card_not {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    text-align: center;
 }

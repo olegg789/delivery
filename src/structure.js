@@ -21,18 +21,6 @@ const structure = [
 	},
 
 	{
-		id: "notify",
-		hash: "notify",
-		panels: [
-			{
-				id: "base",
-				hash: '/base'
-			}
-		]
-	},
-
-
-	{
 		id: "favorite",
 		hash: "favorite",
 		panels: [

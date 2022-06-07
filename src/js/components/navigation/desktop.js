@@ -12,7 +12,6 @@ import {
 import {
     Icon28FavoriteOutline,
     Icon28HistoryBackwardOutline,
-    Icon28Notifications,
     Icon28SearchOutline,
 } from '@vkontakte/icons';
 
@@ -31,15 +30,6 @@ function DesktopNavigation({ router }) {
                 className={router.activeView === 'home' ? 'activeViewCell' : ''}
               >
                   Поиск
-              </Cell>
-
-              <Cell
-                onClick={() => router.toView('notify')}
-                disabled={router.activeView === 'notify'}
-                before={<Icon28Notifications/>}
-                className={router.activeView === 'notify' ? 'activeViewCell' : ''}
-              >
-                Уведомления
               </Cell>
 
             <Cell

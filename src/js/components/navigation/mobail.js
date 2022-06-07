@@ -8,7 +8,6 @@ import {
 import {
 	Icon28FavoriteOutline,
 	Icon28HistoryBackwardOutline,
-	Icon28Notifications,
 	Icon28SearchOutline
 } from '@vkontakte/icons';
 
@@ -30,13 +29,6 @@ function MobailNavigation({ router }) {
 	        onClick={() => openView('home')}
 	        text='Поиск'
 	      ><Icon28SearchOutline/></TabbarItem>
-
-	      <TabbarItem
-	        data-id='notify'
-	        selected={router.activeView === 'notify'}
-					onClick={() => openView('notify')}
-	        text='Уведомления'
-	      ><Icon28Notifications/></TabbarItem>
 
 			<TabbarItem
 				data-id='favorite'

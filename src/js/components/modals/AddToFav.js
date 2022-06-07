@@ -15,19 +15,26 @@ import {
 } from '@vkontakte/icons'
 import api from "../../../apiFunc";
 
-function AddToFav({ nav, router, storage, openSnackbar, getFavorites, acceptNotify }) {
+let loading = false
+
+function AddToFav({ nav, router, storage, openSnackbar, getFavorites, notifications }) {
     const platform = useSelector((state) => state.main.platform)
 
     const [name, setName] = useState('')
 
     async function addToVaf() {
         try {
+            loading = true
             let res = await api(`favorites/${storage.parcelTrack}`, 'POST', (name.length !== 0) ? {name: name} : {})
+            loading = false
             if (res.response) {
-                router.toModal()
+                router.toBack()
+                setTimeout(router.toModal(), 500)
                 openSnackbar('Посылка сохранена!', <Icon28CheckCircleOutline className='snack_suc'/>)
                 getFavorites()
-                acceptNotify()
+                if (!notifications) {
+                    router.toModal('onNotifications')
+                }
             }
             else {
                 if (res.error.code === 3) {
@@ -80,6 +87,8 @@ function AddToFav({ nav, router, storage, openSnackbar, getFavorites, acceptNoti
                         size='l'
                         stretched
                         onClick={() => addToVaf()}
+                        loading={loading}
+                        hasActive={false}
                     >
                         Сохранить
                     </Button>
