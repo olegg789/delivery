@@ -18,7 +18,7 @@ import api from "../../../apiFunc";
 
 let loading = false
 
-function Home({ router, isDesktop, openSnackbar, snackbar }) {
+function Home({ router, isDesktop, openSnackbar, name, setSnackbar}) {
     const storage = useSelector((state) => state.main)
     const dispatch = useDispatch()
 
@@ -27,6 +27,7 @@ function Home({ router, isDesktop, openSnackbar, snackbar }) {
 
     useEffect(() => {
         loading = false
+        setSnackbar(null)
     }, [])
 
     async function openParcelInfo() {
@@ -66,7 +67,7 @@ function Home({ router, isDesktop, openSnackbar, snackbar }) {
                     <Placeholder
                         className={!isDesktop && 'trackPlaceholder'}
                         icon={<Icon56PlaceOutline/>}
-                        header='Привет!'
+                        header={`Привет, ${name}!`}
                     >
                         Введи трек-номер посылки из <b>СДЭК</b> или <b>Почты России</b> и мы её отследим!
                     </Placeholder>
@@ -90,6 +91,7 @@ function Home({ router, isDesktop, openSnackbar, snackbar }) {
                             stretched
                             hasActive={false}
                             loading={loading}
+                            disabled={!track}
                             onClick={() => {
                                 if (track === undefined || track.length === 0) {
                                     setStatusTrack('error')

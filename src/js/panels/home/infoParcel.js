@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { withRouter } from "@reyzitwo/react-router-vkminiapps";
 
 import {
@@ -7,11 +7,15 @@ import {
     Placeholder,
     Group, Header, SimpleCell, Div, Separator, Button, FormItem
 } from "@vkontakte/vkui";
-import { Icon56PlaceOutline} from '@vkontakte/icons';
+import {Icon28CubeBoxOutline} from '@vkontakte/icons';
 import {useSelector} from "react-redux";
 
-function InfoParcel({ router, snackbar }) {
+function InfoParcel({ router, snackbar, setSnackbar }) {
     const storage = useSelector((state) => state.main)
+
+    useEffect(() => {
+        setSnackbar(null)
+    })
 
     return(
         <>
@@ -24,7 +28,7 @@ function InfoParcel({ router, snackbar }) {
 
             <Group>
                 <Placeholder
-                    icon={<Icon56PlaceOutline/>}
+                    icon={<Icon28CubeBoxOutline width={56} height={56}/>}
                     header={'Посылка ' + storage.parcelTrack}
                     action={!storage.infoParcel.delivered &&
                         <Button
@@ -44,7 +48,7 @@ function InfoParcel({ router, snackbar }) {
             </Group>
                 <Group header={
                     <Header mode='secondary'>
-                        История перемещений ({storage.infoParcel.history.length})
+                        История перемещений
                     </Header>
                 }>
                     {storage.infoParcel.history.length !== 0 &&

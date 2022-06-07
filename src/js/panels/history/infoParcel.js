@@ -7,7 +7,7 @@ import {
     Placeholder,
     Group, Header, SimpleCell, Div, Separator, FormItem
 } from "@vkontakte/vkui";
-import {Icon28LocationOutline} from '@vkontakte/icons';
+import {Icon28CubeBoxOutline, } from '@vkontakte/icons';
 import {useSelector} from "react-redux";
 
 function HistoryParcel({ router, snackbar }) {
@@ -30,16 +30,17 @@ function HistoryParcel({ router, snackbar }) {
 
             <Group>
                 <Placeholder
-                    icon={<Icon28LocationOutline width={56} height={56}/>}
+                    icon={<Icon28CubeBoxOutline width={56} height={56}/>}
                     header={'Посылка ' + info.name}
                 >
                     Получатель: {info.recipient} <br/>
                     Вес: {info.weight !== null ? info.weight : 'Неизвестно'}
                 </Placeholder>
+            </Group>
                 <Group
                     header={
                         <Header mode='secondary'>
-                            История перемещений ({history.length})
+                            История перемещений
                         </Header> }
                     separator={"hide"}
                 >
@@ -69,7 +70,6 @@ function HistoryParcel({ router, snackbar }) {
                         })
                     }
                 </Group>
-            </Group>
         </>
     )
 }

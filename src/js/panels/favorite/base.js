@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, {useEffect, useRef} from "react";
 import {withRouter} from "@reyzitwo/react-router-vkminiapps";
 import {
     ActionSheet,
@@ -23,7 +23,7 @@ import api from "../../../apiFunc";
 import {set} from "../../reducers/mainReducer";
 import {useDispatch} from "react-redux";
 
-function Favorite({ router, storage, getFavorites, openSnackbar }) {
+function Favorite({ router, storage, getFavorites, openSnackbar, setSnackbar }) {
 
     const dispatch = useDispatch()
     const TargetRef = useRef()
@@ -83,6 +83,10 @@ function Favorite({ router, storage, getFavorites, openSnackbar }) {
         }
     }
 
+    useEffect(() => {
+        setSnackbar(null)
+    })
+
     function openActionSheet(ref, code, id) {
         router.toPopout(
             <ActionSheet
@@ -129,7 +133,7 @@ function Favorite({ router, storage, getFavorites, openSnackbar }) {
     return (
         <>
             <PanelHeader separator={false}>
-                Избранное {storage.favorites.length !== 0 && `(${storage.favorites.length})`}
+                Избранное
             </PanelHeader>
             <Group>
                 {storage.favorites.length !== 0 ?
@@ -167,7 +171,7 @@ function Favorite({ router, storage, getFavorites, openSnackbar }) {
                     </>:
                     <Placeholder
                         icon={<Icon56CancelCircleOutline width={56} height={56}/>}
-                        header='Упс...'
+                        header='Кажется, здесь ещё ничего нет!'
                         action={
                             <Button
                                 size='m'
@@ -179,7 +183,7 @@ function Favorite({ router, storage, getFavorites, openSnackbar }) {
                         }
                         className={!storage.isDesktop && 'fav_placeholder'}
                     >
-                        У вас ещё нет сохранённых посылок!
+                        Добавь любимую посылку в избранное и отслеживай историю перемещений!
                     </Placeholder>
 
                 }

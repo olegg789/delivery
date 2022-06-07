@@ -1,9 +1,10 @@
 import React from "react";
 import {withRouter} from "@reyzitwo/react-router-vkminiapps";
-import {Card, Div, Footer, FormItem, Group, PanelHeader} from "@vkontakte/vkui";
+import {Button, Card, Div, Footer, FormItem, Group, PanelHeader, Placeholder} from "@vkontakte/vkui";
 import {useDispatch} from "react-redux";
 import {set} from "../../reducers/mainReducer";
 import api from "../../../apiFunc";
+import {Icon56CancelCircleOutline} from "@vkontakte/icons";
 
 function History({router, storage}) {
     const dispatch = useDispatch()
@@ -33,14 +34,15 @@ function History({router, storage}) {
     return (
         <>
             <PanelHeader separator={false}>
-                История {storage.history.length !== 0 && `(${storage.history.length})`}
+                История
             </PanelHeader>
             <Group>
+                {storage.history.length !== 0 ?
                 <>
                 {storage.history.map((el) => {
                     return (
-                        <Div style={{margin: -10}}>
-                            <Card onClick={() => openHistoryInfo(el)}>
+                        <Div style={{margin: -5}}>
+                            <Card onClick={() => openHistoryInfo(el)} className='history'>
                                 <FormItem top='Имя посылки'>
                                     {el.name}
                                 </FormItem>
@@ -55,7 +57,24 @@ function History({router, storage}) {
 
                 })}
                 <Footer>Всего {storage.history.length} {declOfNum(storage.history.length, ['посылка', 'посылки', 'посылок'])}</Footer>
-                </>
+                </> :
+                    <Placeholder
+                        icon={<Icon56CancelCircleOutline width={56} height={56}/>}
+                        header='Кажется, здесь ещё ничего нет!'
+                        action={
+                            <Button
+                                size='m'
+                                stretched
+                                onClick={() => router.toView('home')}
+                            >
+                                Найти посылку
+                            </Button>
+                        }
+                        className={!storage.isDesktop && 'fav_placeholder'}
+                    >
+                        Получи посылку из избранного и она появится здесь!
+                    </Placeholder>
+                }
             </Group>
         </>
     )

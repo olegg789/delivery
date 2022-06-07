@@ -1,7 +1,7 @@
 import React from "react";
 import {withRouter} from "@reyzitwo/react-router-vkminiapps";
 import {Card, Div, FormItem, FormLayoutGroup, Group, PanelHeader, PanelHeaderBack, Placeholder,} from "@vkontakte/vkui";
-import {Icon28LocationOutline} from "@vkontakte/icons";
+import {Icon28ServicesOutline} from "@vkontakte/icons";
 
 function About({router}) {
     return (
@@ -13,8 +13,8 @@ function About({router}) {
             </PanelHeader>
             <Group>
                 <Placeholder
-                    icon={<Icon28LocationOutline width={56} height={56}/>}
-                    header='Привет!'
+                    icon={<Icon28ServicesOutline width={56} height={56}/>}
+                    header='О сервисе'
                 >
                     Это приложение для отслеживания почтовых отправлений из <b>СДЭК</b> или <b>Почты России</b>
                 </Placeholder>
